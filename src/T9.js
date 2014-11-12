@@ -1,4 +1,6 @@
-function T9(wordList){
+function T9(wordList, maxSearch, numWords){
+  this.maxSearch = maxSearch;
+  this.numWords = numWords;
 
   this.wordsArray = Object.keys(wordList);
 
@@ -36,7 +38,7 @@ function T9(wordList){
 
   var that = this;
   console.log('loading array of', this.wordsArray.length, 'words')
-
+// Build trie
   _.each(this.wordsArray, function(el){
     var current;
     var built = _.reduce(el.split(''), function(current, char){
@@ -63,22 +65,44 @@ function T9(wordList){
 };
 
 T9.prototype.txt = function(num, node){
-  console.log(node)
   if(!node){
-    node = this.trie[num];
+    if(this.trie[num]){
+      node = this.trie[num];
+    }else{
+      node = this.trie;
+    }
   }
-  if(node && node.words){
-    console.log('words', node.words)
-  };
   if(node[num]){
     node = node[num];
   }
   var that = this;
-  return function(num){
-    return that.txt(num, node);
+  return {
+    txt:function(num){
+      return that.txt(num, node);
+    },
+    result:function(){
+      return that._bfs(node);
+    } 
   }
 };
 
-T9.prototype.bfs = function(num){
+// Does BFS to find certain num of words. Returns found words.
+T9.prototype._bfs = function(node){
+  var wordsList = [];
+  var queue = [];
+  queue.push(node);
+  var maxSearch = this.maxSearch;
 
+  // Will return if it has explored maxSearch nodes or found numWords of words.
+  while(wordsList.length < this.numWords && queue.length > 0 && maxSearch > 0){
+    var current = queue.shift();
+    _.each(current, function(el, key){
+      queue.push(el);
+    })
+    if(current.words){
+      wordsList = wordsList.concat(current.words);
+    }
+    maxSearch -= 1;
+  }
+  return wordsList;
 };
