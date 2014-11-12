@@ -24,6 +24,9 @@ App.prototype.init = function(){
 
 App.prototype.render = function(listOfWords){
   var result = "";
+  listOfWords.sort(function(a, b){
+    return a.length - b.length;
+  })
   listOfWords.forEach(function(el){
     var temp = "<div>" + el.toString() + "</div>";
     result += temp;
