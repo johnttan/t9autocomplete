@@ -66,16 +66,13 @@ function T9(wordList, maxSearch, numWords){
 
 T9.prototype.txt = function(num, node){
   if(!node){
-    if(this.trie[num]){
-      node = this.trie[num];
-    }else{
-      node = this.trie;
-    }
+    node = this.trie;
   }
   if(node[num]){
     node = node[num];
   }
   var that = this;
+  console.log(node.words, 'txt')
   return {
     txt:function(num){
       return that.txt(num, node);
@@ -91,6 +88,7 @@ T9.prototype._bfs = function(node){
   var wordsList = [];
   var queue = [];
   queue.push(node);
+  console.log(node.words, 'inbfs');
   var maxSearch = this.maxSearch;
 
   // Will return if it has explored maxSearch nodes or found numWords of words.

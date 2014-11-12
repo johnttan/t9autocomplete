@@ -1,5 +1,5 @@
 function App(){
-  this.T9 = new T9(allWords, 10000, 10);
+  this.T9 = new T9(allWords, 500000, 200);
 };
 
 App.prototype.init = function(){
